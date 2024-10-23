@@ -1,0 +1,88 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+env/
+venv/
+build/
+develop-eggs/
+dist/
+eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Poetry specific
+.pdm.toml
+__pypackages__/
+
+# Gradio specific (if you generate assets locally)
+static/
+gradio/
+gradio/theme.css
+gradio/__init__.py
+
+# dotenv environment variable file
+.env
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Black specific
+*.pyc
+*.pyo
+*.pyd
+
+# Flake8 specific
+.flake8
+
+# pytest specific
+.pytest_cache/
+cache/
+pytest_cache/
+test-results.xml
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Local test files
+*.local
+
+# Logs
+*.log

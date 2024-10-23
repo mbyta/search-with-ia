@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "search-with-ia"
+version = "0.1.0"
+description = ""
+authors = ["Tamby Narivo <tamby.narivo@gmail.com>"]
+readme = "README.md"
+packages = [{include = "search_with_ia", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "~3.12"
+autogen-agentchat = ">=0.2,<1.0"
+newsapi-python = "^0.2.7"
+python-dotenv = "^1.0.1"
+beautifulsoup4 = "^4.12.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
