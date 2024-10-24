@@ -23,14 +23,13 @@ class AgentsSwarm():
 
     def execute(self, user_query: str) -> str:
         search_query = self.query_generator_agent.generate_reply(messages=[{"content": user_query, "role": "user"}])
-        print("search_query", search_query)
 
         response = self.user_proxy_agent.initiate_chat(
             self.tool_caller_agent,
             message=search_query,
             summary_method="reflection_with_llm",
             summary_args={"summary_prompt": f"Answering the following question: `{user_query}` by summarizing the content"})
-        print("response", response)
+
         return response.summary
 
     @staticmethod
