@@ -1,65 +1,34 @@
-from dotenv import load_dotenv
-import os
-import autogen
-from datetime import datetime
-from newsapi_client import NewsApiClient
-from typing_extensions import Annotated
+import gradio as gr
+import html
+from agents_swarm import AgentsSwarm
 
-load_dotenv()
+class SearchWithAIApp:
+    def __init__(self):
+        with gr.Blocks(title="Search with AI", fill_width=True) as app:
+            with gr.Column():
+                gr.Markdown("# Search with AI")
 
-llm_config = {
-    "timeout": 600,
-    "cache_seed": 42,
-    "config_list": [{"model": "gpt-4o-mini", "api_key": os.getenv("API_KEY_LLM")},],
-    "temperature": 0.9,
-}
+                chatbot = gr.Chatbot(height="70vh", type="messages")
 
-query_generator_agent = autogen.ConversableAgent(
-    name="query_generator_agent",
-    llm_config=llm_config,
-    human_input_mode="NEVER",
-    system_message=
-    f"""
-    You are an assistant that, given a question or any other types of messages, transform it to the best web search query possible.
-    As an additional context, note that today's date is {datetime.now().strftime("%Y-%m-%d")}
-    """
-)
+                with gr.Row():
+                    user_input_textbox = gr.Textbox(show_label=False, placeholder="Ask your question")
 
-tool_caller_agent = autogen.ConversableAgent(
-    name="tool_caller_agent",
-    llm_config=llm_config,
-    system_message=
-    f"""
-    You solve tasks using your tools. Reply with 'TERMINATE' when the task has been completed.
-    """
-)
+                user_input_textbox.submit(fn=self.on_user_input_entered, inputs=[user_input_textbox, chatbot], outputs=[user_input_textbox, chatbot])
 
-# create a UserProxyAgent instance named "user_proxy"
-user_proxy_agent = autogen.ConversableAgent(
-    name="user_proxy",
-    llm_config=False,
-    human_input_mode="NEVER",
-    max_consecutive_auto_reply=10,
-    code_execution_config=False,
-    is_termination_msg=lambda x: x.get("content", "") is not None and "terminate" in x["content"].lower(),
-    default_auto_reply="Continue if you have not finished your task, otherwise reply 'TERMINATE'."
-)
+        self.app = app
 
-def get_search_result(query: Annotated[str, "The search term"]) -> Annotated[str, "The result of the search"]:
-    tool = NewsApiClient()
-    return tool.get_search_result(query)
+    def on_user_input_entered(self, user_input: gr.Textbox, chat_history: gr.Chatbot) -> list[str, gr.Chatbot]:
+        agents_swarm = AgentsSwarm()
+        response = agents_swarm.execute(user_input)
 
-autogen.register_function(
-    get_search_result,
-    caller=tool_caller_agent,
-    executor=user_proxy_agent,
-    description="Searches on the web and returns the result"
-)
+        chat_history.append({"role": "user", "content": html.escape(user_input)})
+        chat_history.append({"role": "assistant", "content": html.escape(response)})
+
+        return ["", chat_history]
+
+    def launch(self):
+        self.app.launch()
 
 if __name__ == "__main__":
-    reply = user_proxy_agent.initiate_chat(
-        tool_caller_agent,
-        message="france current prime minister 2024",
-        summary_method="reflection_with_llm",
-        summary_args={"summary_prompt": "Summarize the content"})
-    print("=== ANSWER ===", reply)
+    chat_app = SearchWithAIApp()
+    chat_app.launch()

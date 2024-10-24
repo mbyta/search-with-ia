@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from newsapi import NewsApiClient as ApiClient
+from datetime import datetime, timedelta
 import os
 import re
 from bs4 import BeautifulSoup
@@ -12,7 +13,10 @@ class NewsApiClient():
         self.client = ApiClient(api_key=os.getenv("API_KEY_NEWSAPI"))
 
     def get_search_result(self, query: str) -> str:
-        results = self.client.get_everything(q=query, language="en")
+        now = datetime.now()
+        to_date = now.strftime("%Y-%m-%d")
+        from_date = now - timedelta(days=5)
+        results = self.client.get_everything(q=query, from_param=from_date, to=to_date, language="en", sort_by="popularity", page_size=15)
         cleaned_texts = []
 
         for article in results["articles"]:
