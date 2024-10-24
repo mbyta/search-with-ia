@@ -4,7 +4,7 @@
 [![Gradio Version](https://img.shields.io/badge/gradio-5.3.0-green.svg)](https://gradio.app/)
 [![Poetry Version](https://img.shields.io/badge/poetry-1.8.3-orange.svg)](https://python-poetry.org/)
 
-This chatbot combines the power of real-time web search with advanced AI summarization to deliver accurate, contextual responses to user questions.
+<img src="./assets/search_with_ai.png" alt="Search with AI" width="600" />
 
 ## Table of Contents
 
@@ -14,7 +14,7 @@ This chatbot combines the power of real-time web search with advanced AI summari
 
 ## Introduction
 
-This chatbot leverages web search to find relevant information in response to user queries. It automatically searches the web, extracts key information, and uses a Large Language Model (LLM) to summarize the results. The LLM then analyzes the summary and provides a coherent and insightful answer based on the gathered information.
+This chatbot combines the power of real-time web search with advanced AI summarization to deliver accurate and up-to-date responses to user questions.<br>It uses a multi-agent system built with the [AutoGen](https://microsoft.github.io/autogen/0.2/) framework.
 
 ## Installation
 

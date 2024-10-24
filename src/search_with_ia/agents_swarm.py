@@ -28,7 +28,7 @@ class AgentsSwarm():
             self.tool_caller_agent,
             message=search_query,
             summary_method="reflection_with_llm",
-            summary_args={"summary_prompt": f"Answering the following question: `{user_query}` by summarizing the content"})
+            summary_args={"summary_prompt": f"Answer the following question: `{user_query}` by summarizing the content"})
 
         return response.summary
 
@@ -52,7 +52,7 @@ class AgentsSwarm():
             system_message=
             f"""
             You are an assistant that, given a question or any other types of messages, transform it to the best web search query possible.
-            Always add the current date in query, that is the day of the month, the month and the year. (Note that today's date is {datetime.now().strftime("%Y-%m-%d")})
+            If the question is time related, append the appropriate date to the query, for example `September 15 2024` (you MUST follow this date format). Note that today's date is {datetime.now().strftime("%Y-%m-%d")}.
             """
         )
 
